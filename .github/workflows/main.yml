@@ -27,3 +27,9 @@ jobs:
 
       - name: run
         run: gradle clean :bootRun
+        env:
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+
