@@ -25,13 +25,15 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      - name: run
+      - name: build
         run:
           gradle clean build
-          gradle -jar build/libs/educationLab-0.0.1-SNAPSHOT.jar
         env:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_URL: ${{ secrets.DB_URL }}
           DB_PORT: ${{ secrets.DB_PORT }}
 
+      - name: run
+        run:
+          gradle -jar build/libs/educationLab-0.0.1-SNAPSHOT.jar
