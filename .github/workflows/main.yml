@@ -32,11 +32,6 @@ jobs:
       - name: test and build
         run:
           ./gradlew clean build --stacktrace
-        env:
-          DB_USERNAME: ${{ secrets.DB_USERNAME }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_URL: ${{ secrets.DB_URL }}
-          DB_PORT: ${{ secrets.DB_PORT }}
 
       - name: run
         run:
