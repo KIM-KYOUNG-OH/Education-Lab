@@ -23,7 +23,6 @@ jobs:
         run: |
           cd ./src/main/resources
           sed 's/${DB_URL}/$DB_URL/g; s/${DB_PORT}/$DB_PORT/g; s/${DB_USERNAME}/$DB_USERNAME/g; s/${DB_PASSWORD}/$DB_PASSWORD/g;' application.yml > application.tmp.yml && mv application.tmp.yml application.yml
-          cat application.yml
         env:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
@@ -33,6 +32,11 @@ jobs:
       - name: test and build
         run:
           ./gradlew clean build
+        env:
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_PORT: ${{ secrets.DB_PORT }}
 
       - name: run
         run:
