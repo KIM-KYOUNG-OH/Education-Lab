@@ -21,11 +21,11 @@ jobs:
 
       - name: dynamically parse application.yml
         run:
-          - cd ./src/main/resources
-          - sed 's/${DB_URL}/$DB_URL/g' application.yml
-          - sed 's/${DB_PORT}/$DB_PORT/g' application.yml
-          - sed 's/${DB_USERNAME}/$DB_USERNAME/g' application.yml
-          - sed 's/${DB_PASSWORD}/$DB_PASSWORD/g' application.yml
+          cd ./src/main/resources
+          sed 's/${DB_URL}/$DB_URL/g' application.yml
+          sed 's/${DB_PORT}/$DB_PORT/g' application.yml
+          sed 's/${DB_USERNAME}/$DB_USERNAME/g' application.yml
+          sed 's/${DB_PASSWORD}/$DB_PASSWORD/g' application.yml
         env:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
