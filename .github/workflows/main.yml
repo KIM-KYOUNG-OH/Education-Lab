@@ -20,7 +20,7 @@ jobs:
           uses: actions/setup-java@v3
           with:
             java-version: '11'
-            distribution: 'temurin'
+            distribution: 'adopt'
 
       - name: dynamically parse application.yml
         run: |
