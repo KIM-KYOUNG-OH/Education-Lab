@@ -27,7 +27,7 @@ jobs:
 
       - name: build
         run:
-          gradle clean build
+          ./gradlew clean build
         env:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
