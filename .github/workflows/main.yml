@@ -21,6 +21,7 @@ jobs:
 
       - name: dynamically parse application.yml
         run:
+          cd ./src/main/resources
           sed 's/${DB_URL}/$DB_URL/g; s/${DB_PORT}/$DB_PORT/g; s/${DB_USERNAME}/$DB_USERNAME/g; s/${DB_PASSWORD}/$DB_PASSWORD/g;' application.yml > application.tmp.yml && mv application.tmp.yml application.yml
         env:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
