@@ -1,10 +1,6 @@
-# This is a basic workflow to help you get started with Actions
+name: CI/CD
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
   pull_request:
@@ -13,10 +9,8 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  CI-CD:
+  workflow:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -25,14 +19,22 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
-      - name: build
+      - name: dynamically parse application.yml
         run:
-          ./gradlew clean build
+          cd ./src/main/resources,
+          sed 's/${DB_URL}/$DB_URL/g' application.yml,
+          sed 's/${DB_PORT}/$DB_PORT/g' application.yml,
+          sed 's/${DB_USERNAME}/$DB_USERNAME/g' application.yml,
+          sed 's/${DB_PASSWORD}/$DB_PASSWORD/g' application.yml
         env:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
           DB_URL: ${{ secrets.DB_URL }}
           DB_PORT: ${{ secrets.DB_PORT }}
+
+      - name: test and build
+        run:
+          ./gradlew clean build
 
       - name: run
         run:
