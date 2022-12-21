@@ -32,6 +32,10 @@ public class DBConnectionTest {
 
     @Test
     public void propertiesTest() {
+        LOGGER.info("url={}", URL);
+        LOGGER.info("USERNAME={}", USERNAME);
+        LOGGER.info("PASSWORD={}", PASSWORD);
+        LOGGER.info("DRIVER={}", DRIVER);
         assertNotNull(URL);
         assertNotNull(USERNAME);
         assertNotNull(PASSWORD);
