@@ -37,87 +37,56 @@ class LoginControllerTest {
     }
 
     @Test
-    public void wrongUsernameRequest() throws Exception {
+    public void invalidUserJoinRequest() throws Exception {
         //given
-        UserJoinRequest request = UserJoinRequest.builder()
+        UserJoinRequest invalidUsernameRequest =  UserJoinRequest.builder()
                 .username(null)
                 .password("Ttest1234@@")
                 .email("sample@naver.com")
                 .role("USER")
                 .build();
 
-        //when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/join")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new Gson().toJson(request))
-        );
-
-        //then
-        resultActions.andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    public void wrongPasswordRequest() throws Exception {
-        //given
-        UserJoinRequest request = UserJoinRequest.builder()
+        UserJoinRequest invalidPasswordRequest = UserJoinRequest.builder()
                 .username("test")
                 .password("1234")
                 .email("sample@naver.com")
                 .role("USER")
                 .build();
 
-        //when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/join")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new Gson().toJson(request))
-        );
-
-        //then
-        resultActions.andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    public void wrongEmailRequest() throws Exception {
-        //given
-        UserJoinRequest request = UserJoinRequest.builder()
+        UserJoinRequest invalidEmailRequest = UserJoinRequest.builder()
                 .username("tom")
                 .password("Ttest1234@@")
                 .email("wrongEmail")
                 .role("USER")
                 .build();
 
-        //when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/join")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new Gson().toJson(request))
-        );
-
-        //then
-        resultActions.andExpect(status().is4xxClientError());
-    }
-
-    @Test
-    public void wrongRoleRequest() throws Exception {
-        //given
-        UserJoinRequest request = UserJoinRequest.builder()
+        UserJoinRequest invalidRoleRequest = UserJoinRequest.builder()
                 .username("tom")
                 .password("Ttest1234@@")
                 .email("sample@naver.com")
                 .role("OWNER")
                 .build();
 
+
         //when
-        ResultActions resultActions = mockMvc.perform(
-                MockMvcRequestBuilders.post("/join")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new Gson().toJson(request))
-        );
+        ResultActions resultActions1 = sendRequestToJoinAPI(invalidUsernameRequest);
+        ResultActions resultActions2 = sendRequestToJoinAPI(invalidPasswordRequest);
+        ResultActions resultActions3 = sendRequestToJoinAPI(invalidEmailRequest);
+        ResultActions resultActions4 = sendRequestToJoinAPI(invalidRoleRequest);
 
         //then
-        resultActions.andExpect(status().is4xxClientError());
+        resultActions1.andExpect(status().is4xxClientError());
+        resultActions2.andExpect(status().is4xxClientError());
+        resultActions3.andExpect(status().is4xxClientError());
+        resultActions4.andExpect(status().is4xxClientError());
+    }
+
+    private ResultActions sendRequestToJoinAPI(UserJoinRequest invalidUsernameRequest) throws Exception {
+        return mockMvc.perform(
+                MockMvcRequestBuilders.post("/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new Gson().toJson(invalidUsernameRequest))
+        );
     }
 
     @Test

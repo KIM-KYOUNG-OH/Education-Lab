@@ -2,7 +2,7 @@ package com.project.educationLab.domain.user.service;
 
 import com.project.educationLab.domain.auth.dto.UserJoinRequest;
 import com.project.educationLab.domain.user.entity.User;
-import com.project.educationLab.domain.user.exception.DuplicatedEmailException;
+import com.project.educationLab.domain.user.exception.DuplicateEmailException;
 import com.project.educationLab.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,11 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
-import javax.swing.text.html.Option;
 
 import java.util.Optional;
 
@@ -35,7 +31,7 @@ class UserServiceTest {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Test
-    public void duplicatedUserId() {
+    public void duplicateUserId() {
         //given
         UserJoinRequest request = UserJoinRequest.builder()
                 .username("tom")
@@ -52,10 +48,8 @@ class UserServiceTest {
         doReturn(Optional.of(response)).when(userRepository)
                 .findByEmail(any(String.class));
 
-        //when
-
-        //then
-        assertThrows(DuplicatedEmailException.class, () -> userService.saveUser(request));
+        //when & Then
+        assertThrows(DuplicateEmailException.class, () -> userService.saveUser(request));
     }
 
     @Test
