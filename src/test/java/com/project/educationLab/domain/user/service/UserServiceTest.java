@@ -2,7 +2,7 @@ package com.project.educationLab.domain.user.service;
 
 import com.project.educationLab.domain.auth.dto.UserJoinRequest;
 import com.project.educationLab.domain.user.entity.User;
-import com.project.educationLab.domain.user.exception.DuplicateEmailException;
+import com.project.educationLab.domain.user.exception.DuplicateUsernameException;
 import com.project.educationLab.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,10 +46,10 @@ class UserServiceTest {
                         .role("USER")
                         .build();
         doReturn(Optional.of(response)).when(userRepository)
-                .findByEmail(any(String.class));
+                .findByUsername(any(String.class));
 
         //when & Then
-        assertThrows(DuplicateEmailException.class, () -> userService.saveUser(request));
+        assertThrows(DuplicateUsernameException.class, () -> userService.saveUser(request));
     }
 
     @Test

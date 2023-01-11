@@ -2,6 +2,7 @@ package com.project.educationLab.domain.auth.controller;
 
 import com.google.gson.Gson;
 import com.project.educationLab.domain.auth.dto.UserJoinRequest;
+import com.project.educationLab.domain.auth.service.PrincipalDetailsService;
 import com.project.educationLab.domain.user.entity.User;
 import com.project.educationLab.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -21,10 +24,10 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-class LoginControllerTest {
+class AuthControllerTest {
 
     @InjectMocks
-    private LoginController loginController;
+    private AuthController authController;
 
     @Mock
     private UserService userService;
@@ -33,7 +36,7 @@ class LoginControllerTest {
 
     @BeforeEach
     public void init() {
-        mockMvc = MockMvcBuilders.standaloneSetup(loginController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(authController).build();
     }
 
     @Test
