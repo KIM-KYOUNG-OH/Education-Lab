@@ -29,14 +29,6 @@ public class AuthController {
      * exception handler 만들기
      */
 
-    @GetMapping("/test/login")
-    public @ResponseBody String testLogin(Authentication authentication) {
-        log.info("/test/login==========");
-        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        log.info("authentication : {}", principalDetails.getUser());
-        return "세션 정보 확인하기";
-    }
-
     @PostMapping("/join")
     @ResponseBody
     public ResponseEntity<String> join(@Validated @RequestBody UserJoinRequest user) {
