@@ -3,6 +3,7 @@ package com.project.educationLab.domain.auth.dto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -13,6 +14,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @Builder
+@ToString
 public class UserJoinRequest {
     @NotBlank
     private String username;
@@ -23,14 +25,16 @@ public class UserJoinRequest {
     private String email;
     @NotBlank @Pattern(regexp = "USER|MANAGER|ADMIN")
     private String role;
+    private String providerId;
 
     public UserJoinRequest() {
     }
 
-    public UserJoinRequest(String username, String password, String email, String role) {
+    public UserJoinRequest(String username, String password, String email, String role, String providerId) {
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
+        this.providerId = providerId;
     }
 }
