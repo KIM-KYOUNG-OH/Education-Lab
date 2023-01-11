@@ -48,7 +48,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         String providerId = userRequest.getClientRegistration().getRegistrationId();
         Map<String, Object> response = oAuth2User.getAttribute("response");
         String userId = (String) response.get("id");
-        String username = providerId + "_" + userId;  // 중복 불허
+        String username = String.format("%s_%s", providerId, userId);
         String password = "defaultPassword";
         String email = (String) response.get("email");
         String role = "USER";
