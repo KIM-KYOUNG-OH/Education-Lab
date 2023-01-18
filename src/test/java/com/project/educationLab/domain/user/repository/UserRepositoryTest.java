@@ -1,16 +1,15 @@
 package com.project.educationLab.domain.user.repository;
 
+import com.project.educationLab.domain.user.entity.AuthProvider;
 import com.project.educationLab.domain.user.entity.User;
+import com.project.educationLab.domain.user.entity.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class UserRepositoryTest {
@@ -27,8 +26,8 @@ class UserRepositoryTest {
                 .username(username)
                 .password("test")
                 .email("test@test.com")
-                .role("USER")
-                .providerId("test")
+                .UserRole(UserRole.ROLE_USER)
+                .authProvider(AuthProvider.NAVER)
                 .build();
         userRepository.save(user);
 
@@ -40,7 +39,7 @@ class UserRepositoryTest {
         assertThat(find.getUsername()).isEqualTo(user.getUsername());
         assertThat(find.getPassword()).isEqualTo(user.getPassword());
         assertThat(find.getEmail()).isEqualTo(user.getEmail());
-        assertThat(find.getRole()).isEqualTo(user.getRole());
-        assertThat(find.getProviderId()).isEqualTo(user.getProviderId());
+        assertThat(find.getUserRole()).isEqualTo(user.getUserRole());
+        assertThat(find.getAuthProvider()).isEqualTo(user.getAuthProvider());
     }
 }

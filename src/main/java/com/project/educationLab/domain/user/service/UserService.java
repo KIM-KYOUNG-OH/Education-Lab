@@ -6,7 +6,6 @@ import com.project.educationLab.domain.user.exception.DuplicateUsernameException
 import com.project.educationLab.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,8 +31,8 @@ public class UserService{
                 .username(userJoinRequest.getUsername())
                 .email(userJoinRequest.getEmail())
                 .password(encPassword)
-                .role(userJoinRequest.getRole())
-                .providerId(userJoinRequest.getProviderId())
+                .UserRole(userJoinRequest.getUserRole())
+                .authProvider(userJoinRequest.getAuthProvider())
                 .build();
         return userRepository.save(user);
     }

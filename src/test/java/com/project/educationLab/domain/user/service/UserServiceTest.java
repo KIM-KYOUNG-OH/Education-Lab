@@ -2,6 +2,7 @@ package com.project.educationLab.domain.user.service;
 
 import com.project.educationLab.domain.auth.dto.UserJoinRequest;
 import com.project.educationLab.domain.user.entity.User;
+import com.project.educationLab.domain.user.entity.UserRole;
 import com.project.educationLab.domain.user.exception.DuplicateUsernameException;
 import com.project.educationLab.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
@@ -37,13 +38,13 @@ class UserServiceTest {
                 .username("tom")
                 .password("Ttest1234@@")
                 .email("sample@naver.com")
-                .role("USER")
+                .userRole(UserRole.ROLE_USER)
                 .build();
         User response = User.builder()
                         .username("tom")
                         .password(bCryptPasswordEncoder.encode("Ttest1234@@"))
                         .email("sample@naver.com")
-                        .role("USER")
+                        .UserRole(UserRole.ROLE_USER)
                         .build();
         doReturn(Optional.of(response)).when(userRepository)
                 .findByUsername(any(String.class));
@@ -59,7 +60,7 @@ class UserServiceTest {
                 .username("tom")
                 .password("Ttest1234@@")
                 .email("sample@naver.com")
-                .role("USER")
+                .userRole(UserRole.ROLE_USER)
                 .build();
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encPassword = encoder.encode(request.getPassword());
@@ -67,7 +68,7 @@ class UserServiceTest {
                 .username(request.getUsername())
                 .password(encPassword)
                 .email(request.getEmail())
-                .role(request.getRole())
+                .UserRole(request.getUserRole())
                 .build()).when(userRepository)
                 .save(any(User.class));
 
@@ -78,7 +79,7 @@ class UserServiceTest {
         assertThat(user.getUsername()).isEqualTo(request.getUsername());
         assertThat(user.getPassword()).isEqualTo(encPassword);
         assertThat(user.getEmail()).isEqualTo(request.getEmail());
-        assertThat(user.getRole()).isEqualTo(request.getRole());
+        assertThat(user.getUserRole()).isEqualTo(request.getUserRole());
 
         verify(userRepository, times(1)).save(any(User.class));
         verify(bCryptPasswordEncoder, times(1)).encode(any(String.class));

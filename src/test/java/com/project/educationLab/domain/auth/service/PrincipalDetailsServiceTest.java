@@ -1,17 +1,15 @@
 package com.project.educationLab.domain.auth.service;
 
 import com.project.educationLab.domain.user.entity.User;
+import com.project.educationLab.domain.user.entity.UserRole;
 import com.project.educationLab.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.Optional;
 
@@ -19,7 +17,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
 class PrincipalDetailsServiceTest {
@@ -52,7 +49,7 @@ class PrincipalDetailsServiceTest {
                 .username("testUser")
                 .password("Ttest1234@@")
                 .email("sample@naver.com")
-                .role("USER")
+                .UserRole(UserRole.ROLE_USER)
                 .build();
 
         //when

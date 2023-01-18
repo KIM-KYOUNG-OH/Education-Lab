@@ -1,14 +1,13 @@
 package com.project.educationLab.domain.auth.service;
 
-import com.google.gson.Gson;
 import com.project.educationLab.domain.auth.dto.PrincipalDetails;
 import com.project.educationLab.domain.auth.dto.UserJoinRequest;
+import com.project.educationLab.domain.user.entity.AuthProvider;
 import com.project.educationLab.domain.user.entity.User;
-import com.project.educationLab.domain.user.repository.UserRepository;
+import com.project.educationLab.domain.user.entity.UserRole;
 import com.project.educationLab.domain.user.service.UserService;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-import org.hibernate.mapping.Any;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,35 +15,21 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.AuthenticationMethod;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
 import org.springframework.security.oauth2.core.OAuth2AccessToken;
-import org.springframework.security.oauth2.core.oidc.StandardClaimNames;
-import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.test.web.reactive.server.WebTestClient;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -115,8 +100,8 @@ class PrincipalOauth2UserServiceTest {
                 .username(username)
                 .password("Ttest1234@@")
                 .email("sample@naver.com")
-                .role("USER")
-                .providerId("test")
+                .UserRole(UserRole.ROLE_USER)
+                .authProvider(AuthProvider.NAVER)
                 .build();
 
         //when
@@ -140,8 +125,8 @@ class PrincipalOauth2UserServiceTest {
                 .username(username)
                 .password("testDiff")
                 .email("testDiff@test.com")
-                .role("USER")
-                .providerId("test")
+                .UserRole(UserRole.ROLE_USER)
+                .authProvider(AuthProvider.NAVER)
                 .build();
         doReturn(Optional.empty()).when(userService)
                 .findByUsername(any(String.class));
