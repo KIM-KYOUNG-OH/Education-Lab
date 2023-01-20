@@ -56,14 +56,14 @@ class PrincipalOauth2UserServiceTest {
                 "\"resultcode\": \"00\"\n" +
                 ", \"message\": \"success\"\n" +
                 ", \"response\": {\n" +
-                "\"id\": \"jO_DkMi63xbgX32ZiY84sdLl7-NEmUsuemtSBamZFIQ\"\n" +
-                ", \"email\": \"kdkg1234@naver.com\"\n" +
-                ", \"name\": \"김경오\"}\n" +
+                "\"id\": \"jO_DkMi63\"\n" +
+                ", \"email\": \"sample@naver.com\"\n" +
+                ", \"name\": \"홍길동\"}\n" +
                 "}";
         this.mockWebServer.enqueue(jsonResponse(userInfoResponse));
         String userInfoUri = this.mockWebServer.url("/user").toString();
 
-        this.testClientRegistration = ClientRegistration.withRegistrationId("test_registration_id")
+        this.testClientRegistration = ClientRegistration.withRegistrationId("Naver")
                 .clientId("client_id")
                 .clientSecret("client_secret")
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
