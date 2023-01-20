@@ -2,7 +2,9 @@ package com.project.educationLab.domain.auth.controller;
 
 import com.google.gson.Gson;
 import com.project.educationLab.domain.auth.dto.UserJoinRequest;
+import com.project.educationLab.domain.user.entity.AuthProvider;
 import com.project.educationLab.domain.user.entity.User;
+import com.project.educationLab.domain.user.entity.UserRole;
 import com.project.educationLab.domain.user.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,10 +23,10 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(MockitoExtension.class)
-class LoginControllerTest {
+class AuthControllerTest {
 
     @InjectMocks
-    private LoginController loginController;
+    private AuthController authController;
 
     @Mock
     private UserService userService;
@@ -33,7 +35,7 @@ class LoginControllerTest {
 
     @BeforeEach
     public void init() {
-        mockMvc = MockMvcBuilders.standaloneSetup(loginController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(authController).build();
     }
 
     @Test
@@ -43,42 +45,32 @@ class LoginControllerTest {
                 .username(null)
                 .password("Ttest1234@@")
                 .email("sample@naver.com")
-                .role("USER")
+                .userRole(UserRole.ROLE_USER)
                 .build();
 
         UserJoinRequest invalidPasswordRequest = UserJoinRequest.builder()
                 .username("test")
                 .password("1234")
                 .email("sample@naver.com")
-                .role("USER")
+                .userRole(UserRole.ROLE_USER)
                 .build();
 
         UserJoinRequest invalidEmailRequest = UserJoinRequest.builder()
                 .username("tom")
                 .password("Ttest1234@@")
                 .email("wrongEmail")
-                .role("USER")
+                .userRole(UserRole.ROLE_USER)
                 .build();
-
-        UserJoinRequest invalidRoleRequest = UserJoinRequest.builder()
-                .username("tom")
-                .password("Ttest1234@@")
-                .email("sample@naver.com")
-                .role("OWNER")
-                .build();
-
 
         //when
         ResultActions resultActions1 = sendRequestToJoinAPI(invalidUsernameRequest);
         ResultActions resultActions2 = sendRequestToJoinAPI(invalidPasswordRequest);
         ResultActions resultActions3 = sendRequestToJoinAPI(invalidEmailRequest);
-        ResultActions resultActions4 = sendRequestToJoinAPI(invalidRoleRequest);
 
         //then
         resultActions1.andExpect(status().is4xxClientError());
         resultActions2.andExpect(status().is4xxClientError());
         resultActions3.andExpect(status().is4xxClientError());
-        resultActions4.andExpect(status().is4xxClientError());
     }
 
     private ResultActions sendRequestToJoinAPI(UserJoinRequest invalidUsernameRequest) throws Exception {
@@ -96,14 +88,16 @@ class LoginControllerTest {
                 .username("tom")
                 .password("Ttest1234@@")
                 .email("sample@naver.com")
-                .role("USER")
+                .userRole(UserRole.ROLE_USER)
+                .authProvider(AuthProvider.NAVER)
                 .build();
 
         User userResponse = User.builder()
                 .username("tom")
                 .password("Ttest1234@@")
                 .email("sample@naver.com")
-                .role("USER")
+                .UserRole(UserRole.ROLE_USER)
+                .authProvider(AuthProvider.NAVER)
                 .build();
 
         doReturn(userResponse).when(userService)
