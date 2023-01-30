@@ -5,6 +5,7 @@ import com.project.educationLab.domain.auth.service.PrincipalOauth2UserService;
 import com.project.educationLab.domain.auth.util.OAuth2AuthenticationFailureHandler;
 import com.project.educationLab.domain.auth.util.OAuth2AuthenticationSuccessHandler;
 import com.project.educationLab.domain.auth.util.JwtAuthenticationFilter;
+import com.project.educationLab.domain.user.entity.UserRole;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,8 +36,8 @@ public class SecurityConfig {
 
         http.authorizeRequests()
                 .antMatchers("/user/**").authenticated()
-                .antMatchers("/manager/**").access("hasRole('ROLE_MANAGER') or hasRole('ROLE_ADMIN')")
-                .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers("/manager/**").access(String.format("hasRole('%s') or hasRole('%s')", UserRole.ROLE_MANAGER.getRole(), UserRole.ROLE_ADMIN.getRole()))
+                .antMatchers("/admin/**").access(String.format("hasRole('%s')", UserRole.ROLE_ADMIN.getRole()))
                 .anyRequest().permitAll();
 
         http.formLogin();
