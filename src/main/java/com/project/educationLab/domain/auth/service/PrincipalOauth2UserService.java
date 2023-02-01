@@ -26,8 +26,6 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
     private final UserService userService;
 
-    // "/login/oauth2/code/{providerId}" 요청시 자동으로 동작
-    // 소셜 로그인시 결과가 OAuth2User 타입 객체에 담김
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
