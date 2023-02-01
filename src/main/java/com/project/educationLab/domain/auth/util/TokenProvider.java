@@ -27,17 +27,18 @@ import java.util.stream.Collectors;
 @Component
 public class TokenProvider {
 
-    private final Key SECRET_KEY;
-    private final String REFRESH_TOKEN_KEY;
+    private final Key accessTokenKey;
+    private final Key refreshTokenKey;
     private static final Long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60;
     private static final Long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 7;
     private final UserRepository userRepository;
 
-    public TokenProvider(@Value("${jwt.secret-key}") String SECRET_KEY, @Value("${jwt.refresh-token-key}") String REFRESH_TOKEN_KEY, UserRepository userRepository) {
+    public TokenProvider(@Value("${jwt.access-token-key}") String SECRET_KEY, @Value("${jwt.refresh-token-key}") String REFRESH_TOKEN_KEY, UserRepository userRepository) {
         this.userRepository = userRepository;
-        byte[] encodedKeyBytes = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes()).getBytes();
-        this.SECRET_KEY = Keys.hmacShaKeyFor(encodedKeyBytes);
-        this.REFRESH_TOKEN_KEY = Base64.getEncoder().encodeToString(REFRESH_TOKEN_KEY.getBytes());
+        byte[] encodedAccessTokenKey = Base64.getEncoder().encodeToString(SECRET_KEY.getBytes()).getBytes();
+        this.accessTokenKey = Keys.hmacShaKeyFor(encodedAccessTokenKey);
+        byte[] encodedRefreshTokenKey = Base64.getEncoder().encodeToString(REFRESH_TOKEN_KEY.getBytes()).getBytes();
+        this.refreshTokenKey = Keys.hmacShaKeyFor(encodedRefreshTokenKey);
     }
 
     public String createAccessToken(Authentication authentication) {
@@ -56,7 +57,7 @@ public class TokenProvider {
                 .claim("role", role)
                 .setIssuedAt(now)
                 .setExpiration(expiredDate)
-                .signWith(SECRET_KEY)
+                .signWith(accessTokenKey)
                 .compact();
     }
 
@@ -67,7 +68,7 @@ public class TokenProvider {
         String refreshToken = Jwts.builder()
                 .setIssuedAt(now)
                 .setExpiration(expiredDate)
-                .signWith(SECRET_KEY)
+                .signWith(refreshTokenKey)
                 .compact();
 
         PrincipalDetails userDetails = (PrincipalDetails) authentication.getPrincipal();
@@ -77,7 +78,7 @@ public class TokenProvider {
         CookieUtil.addSameSiteCookie(response, "refresh_token", refreshToken, (int) (REFRESH_TOKEN_EXPIRE_TIME / 1000));
     }
 
-    // Access Token을 검사하고 얻은 정보로 Authentication 객체 생성
+    // Access Token 을 검사하고 얻은 정보로 Authentication 객체 생성
     public Authentication getAuthentication(String accessToken) {
         Claims claims = parseClaims(accessToken);
         User find = userRepository.findByUsername(claims.getSubject()).orElseThrow(() -> new UsernameNotFoundException("username is not found"));
@@ -93,7 +94,7 @@ public class TokenProvider {
     public Boolean validateToken(String token) {
         try {
             Jwts.parserBuilder()
-                    .setSigningKey(SECRET_KEY)
+                    .setSigningKey(accessTokenKey)
                     .build()
                     .parseClaimsJws(token);
             return true;
@@ -111,7 +112,7 @@ public class TokenProvider {
     private Claims parseClaims(String accessToken) {
         try {
             return Jwts.parserBuilder()
-                    .setSigningKey(SECRET_KEY)
+                    .setSigningKey(accessTokenKey)
                     .build()
                     .parseClaimsJws(accessToken)
                     .getBody();
