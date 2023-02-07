@@ -6,6 +6,8 @@
 
 # ERD
 
+<img width="378" alt="스크린샷 2023-02-07 오후 3 57 35" src="https://user-images.githubusercontent.com/66231761/217170673-f3bee122-6562-441e-9692-18a45c84a852.png">
+
 
 # 트러블 슈팅 및 학습 기록
 - [spring security, oauth2.0, jwt를 이용한 소셜 로그인 구현](https://steadycode.tistory.com/86)
