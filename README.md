@@ -1,5 +1,9 @@
 # Education-Lab
-전문 지식을 공유하고 온라인 강의를 제공하는 플랫폼
+전문 지식을 공유하고 온라인 강의 서비스를 제공하는 플랫폼  
+
+# education-lab-web
+Education-Lab 화면 UI Repository  
+👉 [education-lab-web](https://github.com/KIM-KYOUNG-OH/education-lab-web)  
 
 # 시스템 아키텍처
 
